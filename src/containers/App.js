@@ -11,7 +11,8 @@ state = {
     {id: 'lklkm', name:'Carolyn', age:'36'}
   ],
   otherState: 'some value',
-  showPersons: false
+  showPersons: false,
+  showCockpit: true
 }
 
 changedNameHandler = (event, id) =>{
@@ -44,6 +45,22 @@ togglePersonsHandler = () =>{
   this.setState({showPersons: !doesShow});
 }
 
+//Note: Must return true or false
+shouldComponentUpdate(nextProps, nextState){
+  console.log('[App.js] shouldComponentUpdate');
+  return true;
+}
+
+getSnapshotBeforeUpdate(prevProps, prevState){
+  console.log('[App.js] getSnapshotBeforeUpdate');
+  return {message:'Snapshot'};
+}
+
+componentDidUpdate(prevProps, prevState, snapshot){
+  console.log('[App.js] componentDidUpdate');
+  
+}
+
   render() {
 
     let persons = null;
@@ -57,11 +74,17 @@ togglePersonsHandler = () =>{
 
     return (
       <div className={classes.App}>
-        <Cockpit 
+        <button 
+        onClick={() =>{
+          this.setState({showCockpit:false})
+          }} >
+          Remove Cockpit
+          </button>
+        {this.state.showCockpit ? <Cockpit 
         title={this.props.appTitle}
         showPersons={this.state.showPersons}
         persons={this.state.persons}
-        clicked={this.togglePersonsHandler}/>
+        clicked={this.togglePersonsHandler}/> : null}
         {persons}        
       </div>      
     );
