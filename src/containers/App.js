@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classes from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Auxiliary.js';
 
 class App extends Component {
 state = {
@@ -73,22 +75,25 @@ componentDidUpdate(prevProps, prevState, snapshot){
     }
 
     return (
-      <div className={classes.App}>
+      <Aux>
         <button 
         onClick={() =>{
           this.setState({showCockpit:false})
           }} >
           Remove Cockpit
           </button>
-        {this.state.showCockpit ? <Cockpit 
-        title={this.props.appTitle}
-        showPersons={this.state.showPersons}
-        persons={this.state.persons}
-        clicked={this.togglePersonsHandler}/> : null}
+        {this.state.showCockpit ? (
+          <Cockpit 
+            title={this.props.appTitle}
+            showPersons={this.state.showPersons}
+            personsLength={this.state.persons.length}
+            clicked={this.togglePersonsHandler}
+          />
+        ) : null}
         {persons}        
-      </div>      
+      </Aux>      
     );
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
